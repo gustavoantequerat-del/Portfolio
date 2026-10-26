@@ -32,7 +32,9 @@ export function validateContact(body = {}) {
   return { data, errors, valid: Object.keys(errors).length === 0 }
 }
 
-async function saveMessage(entry) {
+// await saveMessage(messageData); // Comentado porque Vercel no permite escribir en archivos
+
+/* async function saveMessage(entry) {
   await mkdir(dirname(MESSAGES_FILE), { recursive: true })
   let list = []
   try {
@@ -42,7 +44,7 @@ async function saveMessage(entry) {
   }
   list.push(entry)
   await writeFile(MESSAGES_FILE, JSON.stringify(list, null, 2))
-}
+} */
 
 async function sendMail(entry) {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO } = process.env
