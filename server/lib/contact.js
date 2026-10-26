@@ -32,20 +32,6 @@ export function validateContact(body = {}) {
   return { data, errors, valid: Object.keys(errors).length === 0 }
 }
 
-// await saveMessage(messageData); // Comentado porque Vercel no permite escribir en archivos
-
-/* async function saveMessage(entry) {
-  await mkdir(dirname(MESSAGES_FILE), { recursive: true })
-  let list = []
-  try {
-    list = JSON.parse(await readFile(MESSAGES_FILE, 'utf8'))
-  } catch {
-    // primer mensaje o archivo ilegible: empezamos de cero
-  }
-  list.push(entry)
-  await writeFile(MESSAGES_FILE, JSON.stringify(list, null, 2))
-} */
-
 async function sendMail(entry) {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO } = process.env
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) return false
@@ -67,9 +53,12 @@ async function sendMail(entry) {
   return true
 }
 
+// Exportamos handleContact activa, pero sin llamar a saveMessage
 export async function handleContact(data) {
   const entry = { ...data, receivedAt: new Date().toISOString() }
-  await saveMessage(entry)
+  
+  // await saveMessage(entry) <-- Omitido para Vercel
+  
   let emailed = false
   try {
     emailed = await sendMail(entry)
